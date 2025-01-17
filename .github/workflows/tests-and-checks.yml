@@ -33,13 +33,15 @@ jobs:
     name: Run Python Black
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-      
-      - name: Python Black Check
-        uses: rodrigogiraoserrao/python-black-check@v3.0
+      - uses: actions/checkout@v2
+      - name: Check files using the black formatter
+        uses: datadog/action-py-black-formatter@v2.5
+        id: action_black
+      - name: Annotate diff changes using reviewdog
+        if: steps.action_black.outputs.is_formatted == 'true'
+        uses: reviewdog/action-suggester@v1.19.0
         with:
-          line-length: '81'
+          tool_name: blackfmt 
 
   python-pylint:
     name: Run Pylint Github Action
@@ -51,7 +53,7 @@ jobs:
       - name: Run Pylint GitHub Action
         uses: ReasonSoftware/action-pylint@v2.0.4
         with:
-          requirements_file: requirements.txt
+          requirements_file: /src/requirements.txt
           filepaths: "app/*.py"
           options: "-d C0114,C0115,C0116"
 
@@ -70,8 +72,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r /src/requirements.txt
+          sudo -H python -m pip install --upgrade pip
+          sudo -H pip install -r /src/requirements.txt
 
       - name: Run unit tests
         run: python -m unittest discover -s src -p "*.py"
