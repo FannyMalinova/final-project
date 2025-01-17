@@ -11,7 +11,7 @@ resource "aws_iam_access_key" "budget-user" {
 }
 
 ###
-# Policy for terraform backend to S3 and Dynamo DB access #
+# Add policy for terraform backend to S3 and Dynamo DB access #
 ###
 
 data "aws_iam_policy_document" "tf-backend" {
@@ -51,4 +51,39 @@ resource "aws_iam_policy" "tf-backend" {
 resource "aws_iam_user_policy_attachment" "tf-backend" {
   user       = aws_iam_user.budget-user.name
   policy_arn = aws_iam_policy.tf-backend.arn
+}
+
+#########################
+# Add policy for accessing ECR and allow pushing images
+#########################
+
+data "aws_iam_policy_document" "ecr" {
+  statement {
+    effect    = "Allow"
+    actions   = ["ecr:GetAuthorizationToken"]
+    resources = ["*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:CompleteLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:InitiateLayerUpload",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:PutImage"
+    ]
+    resources = [aws_ecr_repository.budget-app-repo.arn]
+  }
+}
+
+resource "aws_iam_policy" "ecr" {
+  name        = "${aws_iam_user.budget-user.name}-ecr"
+  description = "Allow user to manage ECR resources"
+  policy      = data.aws_iam_policy_document.ecr.json
+}
+
+resource "aws_iam_user_policy_attachment" "ecr" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.ecr.arn
 }
