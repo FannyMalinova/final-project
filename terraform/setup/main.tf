@@ -14,11 +14,11 @@ terraform {
     encrypt        = true
     dynamodb_table = "final-project-dynamo-table"
   }
-  
+
 }
 
 provider "aws" {
-  
+
   region = var.region
   default_tags {
     tags = {
