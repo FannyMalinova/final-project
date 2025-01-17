@@ -71,12 +71,7 @@ jobs:
         with: 
           python-version: "3.13"
 
-      - name: Install dependencies
-        run: |
-          sudo -H python -m pip install --upgrade pip
-          sudo -H pip install -r /src/requirements.txt
-
-      - name: Run unit tests
-        run: python -m unittest discover -s src -p "*.py"
-
-
+      - name: Run tests
+        uses: BSFishy/pip-action@v1
+        with:
+          requirements: src/requirements.txt
