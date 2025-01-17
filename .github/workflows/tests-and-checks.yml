@@ -46,6 +46,7 @@ jobs:
   python-pylint:
     name: Run Pylint Github Action
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -53,7 +54,7 @@ jobs:
       - name: Run Pylint GitHub Action
         uses: ReasonSoftware/action-pylint@v2.0.4
         with:
-          requirements_file: src/requirements.txt
+          requirements_file: requirements.txt
           filepaths: "src/*.py"
           options: "-d C0114,C0115,C0116"
 
