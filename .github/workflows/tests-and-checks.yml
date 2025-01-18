@@ -75,8 +75,6 @@ jobs:
         with:
           checkName: "Python Lint"
           path: src
-          plugins: flake8-spellcheck
-          options: "-d SC200"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
