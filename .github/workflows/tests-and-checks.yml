@@ -91,10 +91,6 @@ jobs:
         with:
           path: ./terraform/setup
 
-      - name: Validate failed
-        if: ${{ failure() && steps.validate.outputs.failure-reason == 'validate-failed' }}
-        run: echo "terraform validate failed"
-
   terraform-fmt-deploy:
     name: Format and validate Terraform Deploy
     runs-on: ubuntu-latest
@@ -112,10 +108,3 @@ jobs:
         id: validate
         with:
           path: ./terraform/deploy
-
-      - name: Validate failed
-        if: ${{ failure() && steps.validate.outputs.failure-reason == 'validate-failed' }}
-        run: echo "terraform validate failed"
-
-
-
