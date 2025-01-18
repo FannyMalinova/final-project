@@ -73,8 +73,8 @@ jobs:
         with:
           requirements: src/requirements.txt
 
-  terraform-fmt:
-    name: Check Terraform file are formatted correctly
+  terraform-fmt-validate:
+    name: Format and validate Terraform
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -83,13 +83,24 @@ jobs:
       - name: terraform fmt
         uses: dflook/terraform-fmt@v1.46.0
         with:
-          path: terraform
+          path: terraform/setup
+
+      - name: terraform fmt
+        uses: dflook/terraform-fmt@v1.46.0
+        with:
+          path: terraform/deploy
+    
+      - name: terraform validate
+        uses: dflook/terraform-validate@v1.9.3
+        id: validate
+        with:
+          path: terraform/setup
 
       - name: terraform validate
         uses: dflook/terraform-validate@v1.9.3
         id: validate
         with:
-          path: terraform
+          path: terraform/deploy
 
       - name: Validate failed
         if: ${{ failure() && steps.validate.outputs.failure-reason == 'validate-failed' }}
