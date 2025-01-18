@@ -102,3 +102,8 @@ override.tf.json
 terraform.rc
 
 .pre-commit-config.yaml
+
+.tar
+.zip
+.tgz
+.patch
