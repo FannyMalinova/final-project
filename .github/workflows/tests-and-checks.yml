@@ -2,8 +2,8 @@ name: Syntax check and unit tests on push
 
 on:
   push:
-   branches:
-    - '**' 
+    branches-ignore:
+      - master
   workflow_call:
 
 jobs:
@@ -34,7 +34,7 @@ jobs:
     name: Run Python Black
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Check files using the black formatter
         uses: datadog/action-py-black-formatter@v2.5
         id: action_black
@@ -48,7 +48,7 @@ jobs:
     name: Python Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
