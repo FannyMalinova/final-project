@@ -1,0 +1,37 @@
+name: PR Checks
+
+on:
+  pull-request:
+    branches: [main]
+
+jobs:
+  tests-and-checks:
+    name: Tests and Checks
+    uses: ./.github/workflows/tests-and-checks.yml
+
+  snyk:
+    name: Run Snyk
+    runs-on: ubuntu-latest
+    needs: [tests-and-checks]
+    steps:
+      - name: Run Snyk
+        uses: snyk/actions/python@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  sonar:
+    name: Run SonarCloud
+    runs-on: ubuntu-latest
+    needs: [tests-and-checks]
+    steps:
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v3.1.0
+        with:
+          args:
+            -Dsonar.organization=fannymalinova
+            -Dsonar.projectKey=FannyMalinova_devops-programme
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_SECRET }}
+
+
