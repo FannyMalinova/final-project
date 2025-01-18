@@ -32,6 +32,6 @@ jobs:
             -Dsonar.organization=fannymalinova
             -Dsonar.projectKey=FannyMalinova_devops-programme
         env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_SECRET }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
