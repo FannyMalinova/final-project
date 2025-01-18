@@ -11,6 +11,21 @@ jobs:
     name: PR Checks
     uses: ./.github/workflows/PR-checks.yml
 
+  set-vars:
+    name: Set vars
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set vars
+        run: |
+          if [[ $GITHUB_REF == 'refs/head/release' ]]; then
+            echo "release" > .workspace
+          else
+            echo "staging" > .workspace
+          fi
+
   build:
     name: Build Docker image
     runs-on: ubuntu-latest
