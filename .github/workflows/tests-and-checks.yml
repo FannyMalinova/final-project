@@ -80,23 +80,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: terraform fmt
+      - name: terraform fmt setup
         uses: dflook/terraform-fmt@v1.46.0
         with:
           path: terraform/setup
 
-      - name: terraform fmt
+      - name: terraform fmt deploy
         uses: dflook/terraform-fmt@v1.46.0
         with:
           path: terraform/deploy
     
-      - name: terraform validate
+      - name: terraform validate setup
         uses: dflook/terraform-validate@v1.9.3
         id: validate
         with:
           path: terraform/setup
 
-      - name: terraform validate
+      - name: terraform validate deploy
         uses: dflook/terraform-validate@v1.9.3
         id: validate
         with:
