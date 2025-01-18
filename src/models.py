@@ -2,6 +2,7 @@ from extensions import db
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
@@ -29,6 +30,7 @@ class User(db.Model):
     def get_id(self):
         return str(self.id)
 
+
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -37,9 +39,13 @@ class Account(db.Model):
     balance = db.Column(db.Float, nullable=False, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    type = db.Column(db.String(50), nullable=False)  # e.g., 'deposit', 'withdrawal', 'transfer'
+    account_id = db.Column(
+        db.Integer, db.ForeignKey('account.id'), nullable=False
+    )
+    # type can be: 'deposit', 'withdrawal', 'transfer', etc.
+    type = db.Column(db.String(50), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)

@@ -2,6 +2,7 @@ import unittest
 from app import app, db
 from models import User
 
+
 class UserRegistrationTestCase(unittest.TestCase):
 
     def setUp(self):

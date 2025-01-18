@@ -4,6 +4,7 @@ from models import User
 from flask_migrate import Migrate
 import os
 
+
 def create_app():
     app = Flask(__name__)
 
@@ -33,5 +34,5 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    #app.run(debug=True) 
+    # app.run(debug=True)
     app.run(debug=True, port=os.environ.get("PORT", 5000), host='0.0.0.0')
