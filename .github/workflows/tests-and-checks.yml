@@ -96,7 +96,7 @@ jobs:
         run: echo "terraform validate failed"
 
   terraform-fmt-deploy:
-    name: Format and Validate Terraform Deploy
+    name: Format and validate Terraform Deploy
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout
