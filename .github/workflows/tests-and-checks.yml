@@ -54,7 +54,7 @@ jobs:
       - name: Run Pylint GitHub Action
         uses: ReasonSoftware/action-pylint@v2.0.4
         with:
-          requirements_file: requirements.txt
+          requirements_file: src/requirements.txt
           filepaths: "src/*.py"
           options: "-d C0114,C0115,C0116"
 
