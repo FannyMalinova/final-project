@@ -39,7 +39,7 @@ jobs:
       - name: Build image
         uses: docker/build-push-action@v6
         with:
-          context: /src
+          context: .
           push: false
           tags: ${{ vars.ECR_REPO }}/budget-app:${{ GITHUB.SHA }}
 
