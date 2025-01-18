@@ -3,7 +3,7 @@ name: Syntax check and unit tests on push
 on:
   push:
     branches-ignore:
-      - main
+      - 'main'
   workflow_call:
 
 jobs:
