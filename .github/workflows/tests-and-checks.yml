@@ -71,11 +71,12 @@ jobs:
         with:
           python-version: "3.9"
       - name: Run flake8
-        uses: julianwachholz/flake8-action@v2
+        uses: julianwachholz/flake8-action@v2.0.2
         with:
           checkName: "Python Lint"
           path: src
           plugins: flake8-spellcheck
+          options: "-d SC200"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
