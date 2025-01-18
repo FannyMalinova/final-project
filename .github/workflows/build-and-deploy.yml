@@ -10,6 +10,7 @@ jobs:
   pr-checks:
     name: PR Checks
     uses: ./.github/workflows/PR-checks.yml
+    secrets: inherit
 
   set-vars:
     name: Set vars
