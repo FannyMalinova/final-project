@@ -56,18 +56,18 @@ jobs:
         with:
           context: .
           push: false
-          tags: ${{ vars.ECR_REPO }}/budget-app:${{ GITHUB.SHA }}
+          tags: ${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}
 
       - name: Scan with Trivy
         uses: aquasecurity/trivy-action@0.28.0
         with: 
-          image-ref: ${{ vars.ECR_REPO }}/budget-app:${{ GITHUB.SHA }}
+          image-ref: ${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}
           format: "table"
           ignore-unfixed: true
           vuln-type: "os,library"
 
       - name: Push the image to ECR
-        run: docker push ${{ vars.ECR_REPO }}/budget-app:${{ GITHUB.SHA }}
+        run: docker push ${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}
 
 
 
