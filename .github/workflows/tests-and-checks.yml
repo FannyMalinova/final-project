@@ -80,27 +80,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: terraform fmt setup
+      - name: terraform fmt 
         uses: dflook/terraform-fmt@v1.46.0
         with:
-          path: terraform/setup
+          path: 
+            - terraform/setup
+            - terraform/deploy
 
-      - name: terraform fmt deploy
-        uses: dflook/terraform-fmt@v1.46.0
-        with:
-          path: terraform/deploy
-    
-      - name: terraform validate setup
+      - name: terraform validate 
         uses: dflook/terraform-validate@v1.9.3
         id: validate
         with:
-          path: terraform/setup
-
-      - name: terraform validate deploy
-        uses: dflook/terraform-validate@v1.9.3
-        id: validate
-        with:
-          path: terraform/deploy
+          path: 
+            - terraform/setup
+            - terraform/deploy
 
       - name: Validate failed
         if: ${{ failure() && steps.validate.outputs.failure-reason == 'validate-failed' }}
