@@ -3,7 +3,7 @@ name: Syntax check and unit tests on push
 on:
   push:
     branches-ignore:
-      - master
+      - main
   workflow_call:
 
 jobs:
@@ -38,11 +38,6 @@ jobs:
       - name: Check files using the black formatter
         uses: datadog/action-py-black-formatter@v2.5
         id: action_black
-      - name: Annotate diff changes using reviewdog
-        if: steps.action_black.outputs.is_formatted == 'true'
-        uses: reviewdog/action-suggester@v1.19.0
-        with:
-          tool_name: blackfmt 
 
   python-lint:
     name: Python Lint
