@@ -83,17 +83,17 @@ jobs:
       - name: terraform fmt 
         uses: dflook/terraform-fmt@v1.46.0
         with:
-          path: 
-            - terraform/setup
-            - terraform/deploy
+          path: | 
+            terraform/setup
+            terraform/deploy
 
       - name: terraform validate 
         uses: dflook/terraform-validate@v1.9.3
         id: validate
         with:
-          path: 
-            - terraform/setup
-            - terraform/deploy
+          path: |
+            terraform/setup
+            terraform/deploy
 
       - name: Validate failed
         if: ${{ failure() && steps.validate.outputs.failure-reason == 'validate-failed' }}
