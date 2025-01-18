@@ -18,6 +18,7 @@ jobs:
         uses: snyk/actions/python@master
         continue-on-error: true
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   sonar:
@@ -30,5 +31,6 @@ jobs:
           args:
             -Dsonar.organization=fannymalinova
             -Dsonar.projectKey=FannyMalinova_final-project
-        env: 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
