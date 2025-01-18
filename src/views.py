@@ -1,11 +1,10 @@
 from flask import (
     Blueprint, request, jsonify, render_template,
-    redirect, url_for, after_this_request
+    redirect, url_for
 )
 from flask_login import login_user, logout_user, current_user, login_required
 from extensions import db
 from models import User, Account, Transaction
-from werkzeug.security import check_password_hash
 from prometheus_client import generate_latest, Counter, REGISTRY
 from flask import Response
 
@@ -37,6 +36,7 @@ def home():
 @app.route('/metrics')
 def metrics():
     return Response(generate_latest(REGISTRY), mimetype="text/plain")
+
 
 # Define a Prometheus counter for 401 errors
 http_401_errors_total = Counter(

@@ -1,6 +1,5 @@
 import unittest
 from app import app, db
-from models import User
 
 
 class UserRegistrationTestCase(unittest.TestCase):
@@ -21,6 +20,7 @@ class UserRegistrationTestCase(unittest.TestCase):
             'password': 'testpass'
         })
         self.assertEqual(response.status_code, 201)
+
 
 if __name__ == '__main__':
     unittest.main()
