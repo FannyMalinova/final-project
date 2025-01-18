@@ -7,15 +7,12 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY requirements.txt /app/
+COPY src/requirements.txt /app/
 RUN pip install -r requirements.txt
 
 COPY src /app
 
 ENV FLASK_APP=app.py
-
-COPY wait-for-postgres.sh /wait-for-postgres.sh
-RUN chmod +x /wait-for-postgres.sh
 
 CMD ["./wait-for-postgres.sh", "db", "flask", "run", "--host=0.0.0.0"]
 
