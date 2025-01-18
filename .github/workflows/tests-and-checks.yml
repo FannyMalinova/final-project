@@ -73,27 +73,46 @@ jobs:
         with:
           requirements: src/requirements.txt
 
-  terraform-fmt-validate:
-    name: Format and validate Terraform
+  terraform-fmt-setup:
+    name: Format and validate Terraform Setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: terraform fmt 
+      - name: terraform fmt setup
         uses: dflook/terraform-fmt@v1.46.0
         with:
-          path: | 
-            terraform/setup
-            terraform/deploy
+          path: ./terraform/setup
 
-      - name: terraform validate 
+      - name: terraform validate setup
         uses: dflook/terraform-validate@v1.9.3
         id: validate
         with:
-          path: |
-            terraform/setup
-            terraform/deploy
+          path: ./terraform/setup
+
+      - name: Validate failed
+        if: ${{ failure() && steps.validate.outputs.failure-reason == 'validate-failed' }}
+        run: echo "terraform validate failed"
+
+  terraform-fmt-deploy:
+    name: Format and Validate Terraform Deploy
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v4
+    
+      - name: terraform fmt deploy
+        uses: dflook/terraform-fmt@v1.46.0
+        id: validate
+        with:
+          path: ./terraform/deploy
+
+      - name: terraform validate deploy
+        uses: dflook/terraform-validate@v1.9.3
+        id: validate
+        with:
+          path: ./terraform/deploy
 
       - name: Validate failed
         if: ${{ failure() && steps.validate.outputs.failure-reason == 'validate-failed' }}
