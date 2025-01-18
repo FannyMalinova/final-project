@@ -22,7 +22,6 @@ jobs:
   sonar:
     name: Run SonarCloud
     runs-on: ubuntu-latest
-    needs: [tests-and-checks]
     steps:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v3.1.0
