@@ -82,7 +82,7 @@ jobs:
   unittest:
     name: Run Python unit tests
     runs-on: ubuntu-latest
-    needs: [editorconfig,markdownlintcli, python-black, python-pylint]
+    needs: [editorconfig,markdownlintcli, python-black, python-lint]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
