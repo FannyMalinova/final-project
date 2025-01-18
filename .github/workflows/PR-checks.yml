@@ -1,9 +1,8 @@
 name: PR Checks
 
 on:
-  pull_request:
-    branches: [main]
-
+  workflow_call:
+  
 jobs:
   tests-and-checks:
     name: Tests and Checks
