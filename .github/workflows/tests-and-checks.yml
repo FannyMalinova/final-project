@@ -104,7 +104,6 @@ jobs:
     
       - name: terraform fmt deploy
         uses: dflook/terraform-fmt@v1.46.0
-        id: validate
         with:
           path: ./terraform/deploy
 
