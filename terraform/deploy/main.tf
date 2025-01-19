@@ -9,8 +9,8 @@ terraform {
 
   backend "s3" {
     bucket         = "final-project-s3"
-    key            = "tf-state-prod"
-    workspace_key_prefix = "tf-state-prod-env"
+    key            = "tf-state-release"
+    workspace_key_prefix = "tf-state-release-env"
     region         = "eu-north-1"
     encrypt        = true
     dynamodb_table = "final-project-dynamo-table"

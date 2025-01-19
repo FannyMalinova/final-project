@@ -25,8 +25,8 @@ data "aws_iam_policy_document" "tf-backend" {
     effect  = "Allow"
     actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
     resources = [
-      "arn:aws:s3:::${var.tf-state-bucket}/tf-state-prod/*",
-      "arn:aws:s3:::${var.tf-state-bucket}/tf-state-prod-env/*"
+      "arn:aws:s3:::${var.tf-state-bucket}/tf-state-release/*",
+      "arn:aws:s3:::${var.tf-state-bucket}/tf-state-release-env/*"
     ]
   }
 
