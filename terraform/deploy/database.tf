@@ -28,11 +28,11 @@ resource "aws_security_group" "rds" {
 
 resource "aws_db_instance" "db-main" {
   identifier                 = "${local.prefix}-db"
-  db_name                    = "budget-app-db"
+  db_name                    = "budgetAppDb"
   allocated_storage          = 20
   storage_type               = "gp2"
   engine                     = "postgres"
-  engine_version             = "15.3"
+  engine_version             = "17.1"
   auto_minor_version_upgrade = true
   instance_class             = "db.t4g.micro"
   username                   = var.db_username
