@@ -20,7 +20,7 @@ variable "region" {
 
 variable "db_username" {
   description = "Username for the Budget App database"
-  default     = "budget-app-user"
+  default     = "budgetAppUser"
 }
 
 variable "db_password" {
