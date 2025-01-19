@@ -101,6 +101,7 @@ data "aws_iam_policy_document" "ec2" {
       "ec2:CreateTags",
       "ec2:CreateVpc",
       "ec2:DeleteVpc",
+      "rds:CreateDBSubnetGroup",
       "ec2:DescribeSecurityGroups",
       "ec2:DeleteSubnet",
       "ec2:DeleteSecurityGroup",
