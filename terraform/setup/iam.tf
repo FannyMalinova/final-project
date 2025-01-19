@@ -148,3 +148,35 @@ resource "aws_iam_user_policy_attachment" "ec2" {
   user       = aws_iam_user.budget-user.name
   policy_arn = aws_iam_policy.ec2.arn
 }
+
+###############################
+# Add policy for accessing RDS
+###############################
+
+data "aws_iam_policy_document" "rds" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "rds:DescribeDBSubnetGroups",
+      "rds:DescribeDBInstances",
+      "rds:CreateDBSubnetGroup",
+      "rds:DeleteDBSubnetGroup",
+      "rds:CreateDBInstance",
+      "rds:DeleteDBInstance",
+      "rds:ListTagsForResource",
+      "rds:ModifyDBInstance"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "rds" {
+  name        = "${aws_iam_user.budget-user.name}-rds"
+  description = "Allow user to manage RDS resources."
+  policy      = data.aws_iam_policy_document.rds.json
+}
+
+resource "aws_iam_user_policy_attachment" "rds" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.rds.arn
+}

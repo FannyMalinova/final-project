@@ -17,3 +17,13 @@ variable "region" {
   description = "Default AWS region"
   default     = "eu-north-1"
 }
+
+variable "db_username" {
+  description = "Username for the Budget App database"
+  default = "budget-app-user"
+}
+
+variable "db_password" {
+  description = "Password for the Terraform database"
+}
+
