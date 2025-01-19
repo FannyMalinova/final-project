@@ -16,23 +16,7 @@ jobs:
     uses: ./.github/workflows/PR-checks.yml
     secrets: inherit
 
-  set-vars:
-    name: Set vars
-    runs-on: ubuntu-latest
-    needs: [pr-checks]
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Set vars
-        run: |
-          if [[ $GITHUB_REF == 'refs/head/release' ]]; then
-            echo "release" > .workspace
-          else
-            echo "staging" > .workspace
-          fi
-
-  build:
+  build-and-deploy:
     name: Build Docker image
     runs-on: ubuntu-latest
     needs: [pr-checks]
@@ -50,6 +34,14 @@ jobs:
       - name: Log in to AWS
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2.0.1
+
+      - name: Set vars
+        run: |
+          if [[ $GITHUB_REF == 'refs/head/release' ]]; then
+            echo "release" > .workspace
+          else
+            echo "staging" > .workspace
+          fi
 
       - name: Build image
         uses: docker/build-push-action@v6
@@ -69,8 +61,14 @@ jobs:
       - name: Push the image to ECR
         run: docker push ${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}
 
-
-
-
-
-
+      - name: Terraform Apply
+        env:
+          AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          export TF_VAR_ecr_image=${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}
+          workspace=$(cat .workspace)
+          cd terraform/
+          docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=deploy/ init
+          docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=deploy/ workspace select -or-create $workspace
+          docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=deploy/ apply -auto-approve
