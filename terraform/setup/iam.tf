@@ -164,7 +164,8 @@ data "aws_iam_policy_document" "rds" {
       "rds:CreateDBInstance",
       "rds:DeleteDBInstance",
       "rds:ListTagsForResource",
-      "rds:ModifyDBInstance"
+      "rds:ModifyDBInstance",
+      "rds:AddTagsToResource"
     ]
     resources = ["*"]
   }
@@ -179,4 +180,32 @@ resource "aws_iam_policy" "rds" {
 resource "aws_iam_user_policy_attachment" "rds" {
   user       = aws_iam_user.budget-user.name
   policy_arn = aws_iam_policy.rds.arn
+}
+
+#########################
+# Additional persmissions required for creating a Service Linked Role
+
+data "aws_iam_policy_document" "rds-service-linked-role" {
+  statement {
+    actions   = ["iam:CreateServiceLinkedRole"]
+    effect    = "Allow"
+    resources = ["arn:aws:iam::*:role/aws-service-role/rds.amazonaws.com/AWSServiceRoleForRDS"]
+
+    condition {
+      test     = "StringLike"
+      variable = "iam:AWSServiceName"
+      values   = ["rds.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "rds-service-linked-role" {
+  name        = "${aws_iam_user.budget-user.name}-role"
+  description = "Policy to allow creating a service-linked role for RDS"
+  policy      = data.aws_iam_policy_document.rds-service-linked-role.json
+}
+
+resource "aws_iam_user_policy_attachment" "rds-service-linked-role" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.rds-service-linked-role.arn
 }
