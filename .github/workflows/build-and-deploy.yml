@@ -18,7 +18,7 @@ jobs:
 
   build-and-push:
     name: Build and Push Image
-    runs-on: ubuntu-latesti
+    runs-on: ubuntu-latest
     #outputs:
       #image-name: ${{ steps.build-image.outputs.image-name }}
     #needs: [pr-checks]
