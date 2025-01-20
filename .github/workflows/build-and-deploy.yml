@@ -11,15 +11,17 @@ permissions:
   contents: read 
 
 jobs:
-  pr-checks:
-    name: PR Checks
-    uses: ./.github/workflows/PR-checks.yml
-    secrets: inherit
+  #pr-checks:
+    #name: PR Checks
+    #uses: ./.github/workflows/PR-checks.yml
+    #secrets: inherit
 
-  build-and-deploy:
-    name: Build Docker image
-    runs-on: ubuntu-latest
-    needs: [pr-checks]
+  build-and-push:
+    name: Build and Push Image
+    runs-on: ubuntu-latesti
+    #outputs:
+      #image-name: ${{ steps.build-image.outputs.image-name }}
+    #needs: [pr-checks]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -43,7 +45,8 @@ jobs:
             echo "staging" > .workspace
           fi
 
-      - name: Build image
+      - name: Build and push Docker image
+        id: build-image
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -61,6 +64,11 @@ jobs:
       - name: Push the image to ECR
         run: docker push ${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}
 
+  deploy:
+    name: Build and Push Image
+    runs-on: ubuntu-latest
+    needs: [build-and-push]
+    steps:
       - name: Terraform Apply
         env:
           AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
