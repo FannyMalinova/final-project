@@ -187,6 +187,7 @@ resource "aws_iam_user_policy_attachment" "rds" {
 
 #########################
 # Additional persmissions required for creating a Service Linked Role
+#########################
 
 data "aws_iam_policy_document" "rds-service-linked-role" {
   statement {
@@ -211,4 +212,191 @@ resource "aws_iam_policy" "rds-service-linked-role" {
 resource "aws_iam_user_policy_attachment" "rds-service-linked-role" {
   user       = aws_iam_user.budget-user.name
   policy_arn = aws_iam_policy.rds-service-linked-role.arn
+}
+
+#########################
+# Add policy for accessing ECS
+#########################
+
+data "aws_iam_policy_document" "ecs" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecs:DescribeClusters",
+      "ecs:DeregisterTaskDefinition",
+      "ecs:DeleteCluster",
+      "ecs:DescribeServices",
+      "ecs:UpdateService",
+      "ecs:DeleteService",
+      "ecs:DescribeTaskDefinition",
+      "ecs:CreateService",
+      "ecs:RegisterTaskDefinition",
+      "ecs:CreateCluster",
+      "ecs:UpdateCluster",
+      "ecs:TagResource",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "ecs" {
+  name        = "${aws_iam_user.budget-user.name}-ecs"
+  description = "Allow user to manage ECS resources."
+  policy      = data.aws_iam_policy_document.ecs.json
+}
+
+resource "aws_iam_user_policy_attachment" "ecs" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.ecs.arn
+}
+
+#########################
+# Policy for IAM access #
+#########################
+
+data "aws_iam_policy_document" "iam" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "iam:ListInstanceProfilesForRole",
+      "iam:ListAttachedRolePolicies",
+      "iam:DeleteRole",
+      "iam:ListPolicyVersions",
+      "iam:DeletePolicy",
+      "iam:DetachRolePolicy",
+      "iam:ListRolePolicies",
+      "iam:GetRole",
+      "iam:GetPolicyVersion",
+      "iam:GetPolicy",
+      "iam:CreateRole",
+      "iam:CreatePolicy",
+      "iam:AttachRolePolicy",
+      "iam:TagRole",
+      "iam:TagPolicy",
+      "iam:PassRole"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "iam" {
+  name        = "${aws_iam_user.budget-user.name}-iam"
+  description = "Allow user to manage IAM resources."
+  policy      = data.aws_iam_policy_document.iam.json
+}
+
+resource "aws_iam_user_policy_attachment" "iam" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.iam.arn
+}
+
+################################
+# Policy for CloudWatch access #
+################################
+
+data "aws_iam_policy_document" "logs" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:DeleteLogGroup",
+      "logs:DescribeLogGroups",
+      "logs:CreateLogGroup",
+      "logs:TagResource",
+      "logs:ListTagsLogGroup"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "logs" {
+  name        = "${aws_iam_user.budget-user.name}-logs"
+  description = "Allow user to manage CloudWatch resources."
+  policy      = data.aws_iam_policy_document.logs.json
+}
+
+resource "aws_iam_user_policy_attachment" "logs" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.logs.arn
+}
+
+####################################
+# Policy for ECS and Fargate access
+####################################
+
+data "aws_iam_policy_document" "task-execution-role-policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    resources = ["*"]
+
+  }
+}
+
+resource "aws_iam_policy" "task-execution-role-policy" {
+  name        = "${local.prefix}-task-execution-role-policy"
+  description = "Allow ECS to retrieve images and add to logs."
+  policy      = data.aws_iam_policy_document.task-execution-role-policy.json
+}
+
+data "aws_iam_policy_document" "task-assume-role-policy" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "task-execution-role" {
+  name               = "${local.prefix}-task-execution-role"
+  assume_role_policy = data.aws_iam_policy_document.task-assume-role-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "task-execution-role" {
+  role       = aws_iam_role.task-execution-role.name
+  policy_arn = aws_iam_policy.task-execution-role-policy.arn
+}
+
+################################
+# Policy for ECS Task SSM
+###############################
+
+data "aws_iam_policy_document" "task-ssm-policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role" "app-task-role" {
+  name               = "${local.prefix}-app-task-role"
+  assume_role_policy = data.aws_iam_policy_document.task-assume-role-policy.json
+}
+
+resource "aws_iam_policy" "task-ssm-policy" {
+  name        = "${local.prefix}-task-ssm-role-policy"
+  description = "Policy to allow System Manager to execute in container"
+  policy      = data.aws_iam_policy_document.task-ssm-policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "task-ssm-policy" {
+  role       = aws_iam_role.app-task-role.name
+  policy_arn = aws_iam_policy.task-ssm-policy.arn
 }

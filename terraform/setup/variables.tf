@@ -1,3 +1,8 @@
+variable "prefix" {
+  description = "Prefix for AWS resources"
+  default     = "bap"
+}
+
 variable "tf-state-bucket" {
   description = "S3 bucket for storing Terraform state"
   default     = "final-project-s3"
