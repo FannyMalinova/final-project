@@ -37,3 +37,16 @@ locals {
 
 data "aws_region" "current" {}
 
+#########################################
+# Reference of the Setup project state file
+########################################
+
+data "terraform_remote_state" "setup" {
+  backend = "s3"
+
+  config = {
+    bucket = "final-project-s3"
+    key    = "tf-state-config"
+    region = "eu-north-1"
+  }
+}
