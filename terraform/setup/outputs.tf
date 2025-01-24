@@ -24,15 +24,15 @@ output "ecr-repo-budget-app" {
 
 output "task-execution-role" {
   description = "A task execution role that allows ECS to retrieve images and write to the logs."
-  value = aws_iam_role.task-execution-role.arn
+  value       = aws_iam_role.task-execution-role.arn
 }
 
 output "app-task-role" {
   description = "A task role that grants permissions to application containers in ECS."
-  value = aws_iam_role.app-task-role.arn
+  value       = aws_iam_role.app-task-role.arn
 }
 
 output "ecs-task-logs-api" {
   description = "Log group for CloudWatch"
-  value = aws_cloudwatch_log_group.ecs-task-logs-api
+  value       = aws_cloudwatch_log_group.ecs-task-logs-api
 }
