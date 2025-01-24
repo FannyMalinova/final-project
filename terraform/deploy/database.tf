@@ -3,7 +3,7 @@
 ######################
 
 resource "aws_db_subnet_group" "db-subnet-main" {
-  name = "${local.prefix}-db-subnet-main"
+  name       = "${local.prefix}-db-subnet-main"
   subnet_ids = [aws_subnet.private-a.id, aws_subnet.private-b.id]
 
   tags = {
@@ -35,8 +35,8 @@ resource "aws_db_instance" "db-main" {
   engine_version             = "17.1"
   auto_minor_version_upgrade = true
   instance_class             = "db.t4g.micro"
-  username                   = var.db_username
-  password                   = var.db_password
+  username                   = var.db-username
+  password                   = var.db-password
   skip_final_snapshot        = true
   db_subnet_group_name       = aws_db_subnet_group.db-subnet-main.name
   multi_az                   = false

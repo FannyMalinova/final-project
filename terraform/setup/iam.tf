@@ -342,7 +342,7 @@ data "aws_iam_policy_document" "task-execution-role-policy" {
 
 resource "aws_iam_policy" "task-execution-role-policy" {
   name        = "${local.prefix}-task-execution-role-policy"
-  description = "Allow ECS to retrieve images and add to logs."
+  description = "Allow ECS to retrieve images and write to logs."
   policy      = data.aws_iam_policy_document.task-execution-role-policy.json
 }
 

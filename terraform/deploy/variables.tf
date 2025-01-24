@@ -18,12 +18,15 @@ variable "region" {
   default     = "eu-north-1"
 }
 
-variable "db_username" {
+variable "db-username" {
   description = "Username for the Budget App database"
   default     = "budgetAppUser"
 }
 
-variable "db_password" {
+variable "db-password" {
   description = "Password for the Terraform database"
 }
 
+variable "ecr-app-image" {
+  description = "Path to the ECR repo with the Budget App image"
+}
