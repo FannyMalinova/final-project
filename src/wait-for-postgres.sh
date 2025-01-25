@@ -20,4 +20,5 @@ fi
 
 # Execute the command to start the Flask application.
 # This line is crucial as it ensures that your Flask app starts regardless of the USE_AWS_RDS setting.
+export DATABASE_URI="postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:5432/${DB_NAME}"
 exec $cmd
