@@ -94,7 +94,7 @@ resource "aws_ecs_service" "budget-app" {
   }
 
   load_balancer {
-    target_group_arn = data.terraform_remote_state.setup.outputs.budget-app-target.arn
+    target_group_arn = data.terraform_remote_state.setup.outputs.budget-app-target
     container_name   = "budget-app"
     container_port   = 5000
   }
