@@ -86,10 +86,19 @@ resource "aws_ecs_service" "budget-app" {
     assign_public_ip = true
 
     subnets = [
-      data.terraform_remote_state.setup.outputs.public-a.id,
-      data.terraform_remote_state.setup.outputs.public-a.id
+      data.terraform_remote_state.setup.outputs.private-a.id,
+      data.terraform_remote_state.setup.outputs.private-a.id
     ]
 
     security_groups = [data.terraform_remote_state.setup.outputs.ecs-service.id]
   }
+
+  load_balancer {
+    target_group_arn = data.terraform_remote_state.setup.outputs.budget-app-target.arn
+    container_name   = "budget-app"
+    container_port   = 5000
+  }
+
 }
+
+    
