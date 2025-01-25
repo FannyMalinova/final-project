@@ -76,7 +76,6 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ vars.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
           TF_VAR_db-password: ${{ secrets.TF_VAR_DB_PASSWORD }}
         run: |
           export TF_VAR_ecr_image=${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}

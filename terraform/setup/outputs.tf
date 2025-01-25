@@ -43,30 +43,35 @@ output "ecs-task-logs-bap" {
 
 output "vpc-main" {
   description = "Name of the main VPC"
-  value = aws_vpc.vpc-main.id
+  value = aws_vpc.vpc-main
 }
 
 output "public-a" {
   description = "Name of the public-a subnet"
-  value = aws_subnet.public-a.id
+  value = aws_subnet.public-a
 }
 
 output "public-b" {
   description = "Name of the public-a subnet"
-  value = aws_subnet.public-b.id
+  value = aws_subnet.public-b
 }
 
 output "private-a" {
   description = "Name of the public-a subnet"
-  value = aws_subnet.public-a.id
+  value = aws_subnet.private-a
 }
 
 output "private-b" {
   description = "Name of the public-a subnet"
-  value = aws_subnet.public-a.id
+  value = aws_subnet.private-b
 }
 
 output "ecs-service" {
   description = "Name of the ECS service"
   value = aws_security_group.ecs-service
+}
+
+output "ecs-main" {
+  description = "Name of the ECS cluster"
+  value = aws_ecs_cluster.ecs-main
 }
