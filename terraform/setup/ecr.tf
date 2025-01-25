@@ -3,7 +3,7 @@
 ###################
 
 resource "aws_ecr_repository" "budget-app-repo" {
-  name                 = "budget-app-repo"
+  name                 = "budget-app-${local.prefix}-repo"
   image_tag_mutability = "MUTABLE"
   force_delete         = true
 

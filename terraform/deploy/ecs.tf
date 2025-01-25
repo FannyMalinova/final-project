@@ -75,7 +75,7 @@ resource "aws_ecs_task_definition" "ecs-budget-app" {
 
 resource "aws_ecs_service" "budget-app" {
   name                   = "${local.prefix}-budget-app"
-  cluster                = data.terraform_remote_state.setup.outputs.aws_ecs_cluster.ecs-main.name 
+  cluster                = data.terraform_remote_state.setup.outputs.ecs-main.name 
   task_definition        = aws_ecs_task_definition.ecs-budget-app.family
   desired_count          = 1
   launch_type            = "FARGATE"
@@ -86,10 +86,10 @@ resource "aws_ecs_service" "budget-app" {
     assign_public_ip = true
 
     subnets = [
-      data.terraform_remote_state.setup.outputs.aws_subnet.public-a.id,
-      data.terraform_remote_state.setup.outputs.aws_subnet.public-a.id
+      data.terraform_remote_state.setup.outputs.public-a.id,
+      data.terraform_remote_state.setup.outputs.public-a.id
     ]
 
-    security_groups = [data.terraform_remote_state.setup.outputs.aws_security_group.ecs-service.id]
+    security_groups = [data.terraform_remote_state.setup.outputs.ecs-service.id]
   }
 }
