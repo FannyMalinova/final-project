@@ -43,6 +43,10 @@ resource "aws_ecs_task_definition" "ecs-budget-app" {
           value = aws_db_instance.db-main.password
         },
         {
+          name  = "SECRET_KEY"
+          value = vars.secret_key
+        },
+        {
           name  = "ALLOWED_HOSTS"
           value = "*"
         }
