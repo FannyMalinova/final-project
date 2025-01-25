@@ -44,7 +44,7 @@ resource "aws_ecs_task_definition" "ecs-budget-app" {
         },
         {
           name  = "SECRET_KEY"
-          value = vars.secret_key
+          value = var.secret_key
         },
         {
           name  = "ALLOWED_HOSTS"
