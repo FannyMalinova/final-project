@@ -138,6 +138,7 @@ data "aws_iam_policy_document" "ec2" {
       "ec2:AttachInternetGateway",
       "ec2:ModifyVpcAttribute",
       "ec2:RevokeSecurityGroupIngress",
+      "rds:ModifyDBSubnetGroup"
     ]
     resources = ["*"]
   }
@@ -167,6 +168,7 @@ data "aws_iam_policy_document" "rds" {
       "rds:CreateDBSubnetGroup",
       "rds:DeleteDBSubnetGroup",
       "rds:CreateDBInstance",
+      "rds:ModifyDBSubnetGroup",
       "rds:DeleteDBInstance",
       "rds:ListTagsForResource",
       "rds:ModifyDBInstance",
