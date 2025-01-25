@@ -1,9 +1,9 @@
 ####################################
-# Task definition
+# Task and container definition
 ####################################
 
-resource "aws_ecs_task_definition" "ecs-api" {
-  family                   = "${local.prefix}-ecs-api"
+resource "aws_ecs_task_definition" "ecs-budget-app" {
+  family                   = "${local.prefix}-ecs-budget-app"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 256
@@ -50,9 +50,9 @@ resource "aws_ecs_task_definition" "ecs-api" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = data.terraform_remote_state.setup.outputs.ecs-task-logs-api.name
+          awslogs-group         = data.terraform_remote_state.setup.outputs.ecs-task-logs-bap.name
           awslogs-region        = data.aws_region.current.name
-          awslogs-stream-prefix = "api"
+          awslogs-stream-prefix = "bap"
         }
       }
     }
@@ -66,5 +66,30 @@ resource "aws_ecs_task_definition" "ecs-api" {
   runtime_platform {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
+  }
+}
+
+#############################
+# Service definition
+#############################
+
+resource "aws_ecs_service" "budget-app" {
+  name                   = "${local.prefix}-budget-app"
+  cluster                = aws_ecs_cluster.ecs-main.name
+  task_definition        = aws_ecs_task_definition.budget-app.family
+  desired_count          = 1
+  launch_type            = "FARGATE"
+  platform_version       = "1.4.0"
+  enable_execute_command = true
+
+  network_configuration {
+    assign_public_ip = true
+
+    subnets = [
+      data.terraform_remote_state.setup.outputs.aws_subnet.public-a.id,
+      data.terraform_remote_state.setup.outputs.aws_subnet.public-a.id
+    ]
+
+    security_groups = [data.terraform_remote_state.setup.outputs.aws_security_group.ecs-service.id]
   }
 }

@@ -36,9 +36,9 @@ output "app-task-role" {
 # Output values needed by the Deploy project
 ###########################
 
-output "ecs-task-logs-api" {
+output "ecs-task-logs-bap" {
   description = "Log group for CloudWatch"
-  value       = aws_cloudwatch_log_group.ecs-task-logs-api
+  value       = aws_cloudwatch_log_group.ecs-task-logs-bap
 }
 
 output "vpc-main" {
@@ -64,4 +64,9 @@ output "private-a" {
 output "private-b" {
   description = "Name of the public-a subnet"
   value = aws_subnet.public-a.id
+}
+
+output "ecs-service" {
+  description = "Name of the ECS service"
+  value = aws_security_group.ecs-service
 }
