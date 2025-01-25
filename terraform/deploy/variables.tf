@@ -30,3 +30,7 @@ variable "db-username" {
 variable "db_password" {
   description = "Password for the Terraform database"
 }
+
+variable "secret_key" {
+  description = "Secret key for the Budget App"
+}
