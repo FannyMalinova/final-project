@@ -3,7 +3,7 @@
 ###
 
 resource "aws_iam_user" "budget-user" {
-  name = "budget-app-user"
+  name = "budget-app-${local.prefix}-user"
 }
 
 resource "aws_iam_access_key" "budget-user" {
@@ -26,7 +26,9 @@ data "aws_iam_policy_document" "tf-backend" {
     actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
     resources = [
       "arn:aws:s3:::${var.tf-state-bucket}/tf-state-release/*",
-      "arn:aws:s3:::${var.tf-state-bucket}/tf-state-release-env/*"
+      "arn:aws:s3:::${var.tf-state-bucket}/tf-state-release-env/*",
+      "arn:aws:s3:::${var.tf-state-bucket}/env:/${terraform.workspace}/tf-state-config",
+      "arn:aws:s3:::${var.tf-state-bucket}final-project-s3/tf-state-config"
     ]
   }
 
