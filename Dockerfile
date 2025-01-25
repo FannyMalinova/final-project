@@ -16,4 +16,4 @@ RUN chmod +x ./wait-for-postgres.sh
 
 ENV FLASK_APP=app.py
 
-CMD ["./wait-for-postgres.sh", "db", "flask", "run", "--host=0.0.0.0"]
+CMD ["./wait-for-postgres.sh", "flask", "run", "--host=0.0.0.0"]

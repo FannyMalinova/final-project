@@ -2,10 +2,6 @@
 
 set -e
 
-# Store the first argument in 'host' and then shift arguments to the left.
-# 'host' is expected to be the database host. The remaining arguments are the command to start the Flask app.
-host="$1"
-shift
 cmd="$@"
 
 # Check if the app is using AWS RDS. The USE_AWS_RDS environment variable is set in your Kubernetes deployment.
@@ -14,7 +10,7 @@ if [ "$USE_AWS_RDS" = "true" ]; then
     >&2 echo "Using AWS RDS for PostgreSQL. Skipping wait-for-postgres.sh script in the src folder."
 else
     # If we are testing the app locally with docker-compose, wait for the PostgreSQL database to become ready.
-    until PGPASSWORD="$POSTGRES_PASSWORD" psql -h "$host" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c '\q'; do
+    until PGPASSWORD="$DB_PASS" psql -h "$DB_HOST" -U "$DB_USER" -d "$DB_NAME" -c '\q'; do
         >&2 echo "Postgres is unavailable - sleeping"
         sleep 1
     done
