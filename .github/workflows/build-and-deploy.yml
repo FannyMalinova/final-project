@@ -81,6 +81,7 @@ jobs:
           export TF_VAR_ecr_image=${{ vars.ECR_REPO }}:${{ GITHUB.SHA }}
           workspace=$(cat .workspace)
           cd terraform/
+          docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=setup/ init
           docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=deploy/ init
           docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=deploy/ workspace select -or-create $workspace
           docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=deploy/ apply -auto-approve
