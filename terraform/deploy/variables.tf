@@ -27,6 +27,6 @@ variable "db-username" {
   default     = "budgetAppUser"
 }
 
-variable "db-password" {
+variable "db_password" {
   description = "Password for the Terraform database"
 }
