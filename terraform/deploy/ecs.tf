@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "ecs-budget-app" {
   container_definitions = jsonencode([
     {
       name              = "budget-app"
-      image             = var.ecr-app-image
+      image             = var.ecr_app_image
       essential         = true
       memoryReservation = 256
 
