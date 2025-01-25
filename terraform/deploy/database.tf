@@ -23,7 +23,8 @@ resource "aws_security_group" "rds" {
     protocol  = "tcp"
 
     security_groups = [
-      aws_security_group.ecs-service.id
+      #aws_security_group.ecs-service.id
+      data.terraform_remote_state.setup.outputs.aws_security_group.ecs-service.id
     ]
   }
 

@@ -75,8 +75,8 @@ resource "aws_ecs_task_definition" "ecs-budget-app" {
 
 resource "aws_ecs_service" "budget-app" {
   name                   = "${local.prefix}-budget-app"
-  cluster                = aws_ecs_cluster.ecs-main.name
-  task_definition        = aws_ecs_task_definition.budget-app.family
+  cluster                = data.terraform_remote_state.setup.outputs.aws_ecs_cluster.ecs-main.name 
+  task_definition        = aws_ecs_task_definition.ecs-budget-app.family
   desired_count          = 1
   launch_type            = "FARGATE"
   platform_version       = "1.4.0"
