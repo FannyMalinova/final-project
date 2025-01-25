@@ -18,7 +18,7 @@ variable "region" {
   default     = "eu-north-1"
 }
 
-variable "ecr-app-image" {
+variable "ecr_app_image" {
   description = "Path to the ECR repo with the Budget App image"
 }
 

@@ -12,4 +12,4 @@ services:
             - AWS_DEFAULT_REGION=eu-north-1
             - TF_WORKSPACE=${TF_WORKSPACE}
             - TF_VAR_db-password=${TF_VAR_db-password}
-            - TF_VAR_ecr-app-image=${TF_VAR_ecr-app-image}
+            - TF_VAR_ecr_app_image=${TF_VAR_ecr_app_image}
