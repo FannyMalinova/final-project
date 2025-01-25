@@ -18,6 +18,13 @@ resource "aws_ecs_task_definition" "ecs-budget-app" {
       essential         = true
       memoryReservation = 256
 
+      portMappings = [
+          {
+            containerPort = 5000
+            hostPort      = 5000
+          }
+        ]
+
       environment = [
         {
           name  = "DB_HOST"
