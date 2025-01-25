@@ -4,7 +4,8 @@
 
 resource "aws_db_subnet_group" "db-subnet-main" {
   name       = "${local.prefix}-db-subnet-main"
-  subnet_ids = [aws_subnet.private-a.id, aws_subnet.private-b.id]
+ #subnet_ids = [aws_subnet.private-a.id, aws_subnet.private-b.id]
+  subnet_ids = [data.terraform_remote_state.setup.outputs.aws_subnet.private-a.id, data.terraform_remote_state.setup.outputs.aws_subnet.private-b.id]
 
   tags = {
     Name = "${local.prefix}-db-subnet-group"
@@ -13,15 +14,17 @@ resource "aws_db_subnet_group" "db-subnet-main" {
 resource "aws_security_group" "rds" {
   description = "Allow access to the DB instance"
   name        = "${local.prefix}-rds-inbound-access"
-  vpc_id      = aws_vpc.vpc-main.id
+  #vpc_id      = aws_vpc.vpc-main.id
+   vpc_id = data.terraform_remote_state.setup.outputs.aws_vpc.vpc-main.id
 
   ingress {
     from_port = 5432
     to_port   = 5432
     protocol  = "tcp"
 
-  security_groups = [
-      aws_security_group.ecs-service.id
+    security_groups = [
+      #aws_security_group.ecs-service.id
+      data.terraform_remote_state.setup.outputs.aws_security_group.ecs-service.id
     ]
   }
 

@@ -1,9 +1,9 @@
 ####################################
-# Task definition
+# Task and container definition
 ####################################
 
-resource "aws_ecs_task_definition" "ecs-api" {
-  family                   = "${local.prefix}-ecs-api"
+resource "aws_ecs_task_definition" "ecs-budget-app" {
+  family                   = "${local.prefix}-ecs-budget-app"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
   cpu                      = 256
@@ -50,9 +50,9 @@ resource "aws_ecs_task_definition" "ecs-api" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = data.terraform_remote_state.setup.outputs.ecs-task-logs-api.name
+          awslogs-group         = data.terraform_remote_state.setup.outputs.ecs-task-logs-bap.name
           awslogs-region        = data.aws_region.current.name
-          awslogs-stream-prefix = "api"
+          awslogs-stream-prefix = "bap"
         }
       }
     }
@@ -69,44 +69,27 @@ resource "aws_ecs_task_definition" "ecs-api" {
   }
 }
 
-######################################
-# Security group
-######################################
+#############################
+# Service definition
+#############################
 
-#####################################
-# Security group
-#####################################
+resource "aws_ecs_service" "budget-app" {
+  name                   = "${local.prefix}-budget-app"
+  cluster                = data.terraform_remote_state.setup.outputs.aws_ecs_cluster.ecs-main.name 
+  task_definition        = aws_ecs_task_definition.ecs-budget-app.family
+  desired_count          = 1
+  launch_type            = "FARGATE"
+  platform_version       = "1.4.0"
+  enable_execute_command = true
 
-resource "aws_security_group" "ecs-service" {
-  description = "Access rules for the ECS service."
-  name        = "${local.prefix}-ecs-service"
-  vpc_id      = aws_vpc.vpc-main.id
+  network_configuration {
+    assign_public_ip = true
 
-  # Outbound access to endpoints
-  egress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  # RDS connectivity
-  egress {
-    from_port = 5432
-    to_port   = 5432
-    protocol  = "tcp"
-    cidr_blocks = [
-      aws_subnet.private-a.cidr_block,
-      aws_subnet.private-b.cidr_block,
+    subnets = [
+      data.terraform_remote_state.setup.outputs.aws_subnet.public-a.id,
+      data.terraform_remote_state.setup.outputs.aws_subnet.public-a.id
     ]
-  }
 
-  # HTTP inbound access
-  ingress {
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [data.terraform_remote_state.setup.outputs.aws_security_group.ecs-service.id]
   }
 }
-

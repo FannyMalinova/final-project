@@ -23,16 +23,50 @@ output "ecr-repo-budget-app" {
 }
 
 output "task-execution-role" {
-  description = "A task execution role that allows ECS to retrieve images and write to the logs."
-  value = aws_iam_role.task-execution-role.arn
+  description = "A task execution role that allows ECS to retrieve images and write to the logs"
+  value       = aws_iam_role.task-execution-role.arn
 }
 
 output "app-task-role" {
-  description = "A task role that grants permissions to application containers in ECS."
-  value = aws_iam_role.app-task-role.arn
+  description = "A task role that grants permissions to application containers in ECS"
+  value       = aws_iam_role.app-task-role.arn
 }
 
-output "ecs-task-logs-api" {
+###########################
+# Output values needed by the Deploy project
+###########################
+
+output "ecs-task-logs-bap" {
   description = "Log group for CloudWatch"
-  value = aws_cloudwatch_log_group.ecs-task-logs-api
+  value       = aws_cloudwatch_log_group.ecs-task-logs-bap
+}
+
+output "vpc-main" {
+  description = "Name of the main VPC"
+  value = aws_vpc.vpc-main.id
+}
+
+output "public-a" {
+  description = "Name of the public-a subnet"
+  value = aws_subnet.public-a.id
+}
+
+output "public-b" {
+  description = "Name of the public-a subnet"
+  value = aws_subnet.public-b.id
+}
+
+output "private-a" {
+  description = "Name of the public-a subnet"
+  value = aws_subnet.public-a.id
+}
+
+output "private-b" {
+  description = "Name of the public-a subnet"
+  value = aws_subnet.public-a.id
+}
+
+output "ecs-service" {
+  description = "Name of the ECS service"
+  value = aws_security_group.ecs-service
 }
