@@ -75,3 +75,8 @@ output "ecs-main" {
   description = "Name of the ECS cluster"
   value = aws_ecs_cluster.ecs-main
 }
+
+output "budget-app-target" {
+  description = "Target group for the application"
+  value = aws_lb_target_group.budget-app-target.arn
+}

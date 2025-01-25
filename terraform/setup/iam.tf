@@ -404,3 +404,44 @@ resource "aws_iam_role_policy_attachment" "task-ssm-policy" {
   role       = aws_iam_role.app-task-role.name
   policy_arn = aws_iam_policy.task-ssm-policy.arn
 }
+
+#########################
+# Policy for accessing LB
+#########################
+
+data "aws_iam_policy_document" "elb" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "elasticloadbalancing:DeleteLoadBalancer",
+      "elasticloadbalancing:DeleteTargetGroup",
+      "elasticloadbalancing:DeleteListener",
+      "elasticloadbalancing:DescribeListeners",
+      "elasticloadbalancing:DescribeLoadBalancerAttributes",
+      "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeTargetGroupAttributes",
+      "elasticloadbalancing:DescribeLoadBalancers",
+      "elasticloadbalancing:CreateListener",
+      "elasticloadbalancing:SetSecurityGroups",
+      "elasticloadbalancing:ModifyLoadBalancerAttributes",
+      "elasticloadbalancing:CreateLoadBalancer",
+      "elasticloadbalancing:ModifyTargetGroupAttributes",
+      "elasticloadbalancing:CreateTargetGroup",
+      "elasticloadbalancing:AddTags",
+      "elasticloadbalancing:DescribeTags",
+      "elasticloadbalancing:ModifyListener"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "elb" {
+  name        = "${aws_iam_user.budget-user.name}-elb"
+  description = "Allow user to manage ELB resources."
+  policy      = data.aws_iam_policy_document.elb.json
+}
+
+resource "aws_iam_user_policy_attachment" "elb" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.elb.arn
+}
