@@ -80,3 +80,7 @@ output "budget-app-target" {
   description = "Target group for the application"
   value = aws_lb_target_group.budget-app-target.arn
 }
+
+output "budget-app-endpoint" {
+  value = aws_route53_record.budget-app.fqdn
+}

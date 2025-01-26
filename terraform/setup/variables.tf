@@ -32,3 +32,13 @@ variable "contact" {
   description = "Contact name for resource tagging"
   default     = "fannymalinova@yahoo.com"
 }
+
+variable "dns_zone_name" {
+  description = "Domain name"
+  default     = "fanislava.com"
+}
+
+variable "dns_env" {
+  description = "Prefix for the subdomains"
+  default = "config"
+}
