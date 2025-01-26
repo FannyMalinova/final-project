@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Setup Environment
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
       - release
     paths:
-      - ../../terraform/setup/**
+      - terraform/setup/**
 
 permissions:
   id-token: write
