@@ -11,17 +11,15 @@ permissions:
   contents: read 
 
 jobs:
-  #pr-checks:
-    #name: PR Checks
-    #uses: ./.github/workflows/PR-checks.yml
-    #secrets: inherit
+  pr-checks:
+    name: PR Checks
+    uses: ./.github/workflows/PR-checks.yml
+    secrets: inherit
 
   build-and-push:
     name: Build and Push Image
     runs-on: ubuntu-latest
-    #outputs:
-      #image-name: ${{ steps.build-image.outputs.image-name }}
-    #needs: [pr-checks]
+    needs: [pr-checks]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
