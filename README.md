@@ -148,9 +148,9 @@ In this project, the Terraform workspace feature is leveraged and for a better i
 
 If this job succeeds, a merge request to the main branch triggers the Build and Deploy workflow. It creates a deployment in a Terraform workspace called **staging** and prefixes all resources with a *staging* prefix. 
 
-The public FQDN of the staging deployment of the Budget App application is: [budget-app-staging.fanislava.com](budget-app-staging.fanislava.com).
+The public FQDN of the staging deployment of the Budget App application is: [budget-app-staging.fanislava.com](https://budget-app-staging.fanislava.com).
 
-A merge into the release branch triggers a deployment in the release Terraform workspace and prefixes all created AWS resources with *release*, with the exeption of the public FQDN of the application that has no flags, but is simply [budget-app.fanislava.com](budget-app.fanislava.com).
+A merge into the release branch triggers a deployment in the release Terraform workspace and prefixes all created AWS resources with *release*, with the exeption of the public FQDN of the application that has no flags, but is simply [budget-app.fanislava.com](https://budget-app.fanislava.com).
 
 ## Future Improvements ##
 
