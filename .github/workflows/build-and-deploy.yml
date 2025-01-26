@@ -33,7 +33,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Set vars
+      - name: Determine TF workspace
         run: |
           if [[ $GITHUB_REF == 'refs/heads/release' ]]; then
             echo "release" > .workspace
@@ -41,7 +41,7 @@ jobs:
             echo "staging" > .workspace
           fi
 
-      - name: Read TF workspace contents
+      - name: Read TF workspace value
         id: determine_workspace
         uses: guibranco/github-file-reader-action-v2@latest
         with:
@@ -99,7 +99,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set vars
+      - name: Determine TF workspace
         run: |
           if [[ $GITHUB_REF == 'refs/heads/release' ]]; then
             echo "release" > .workspace
@@ -107,7 +107,7 @@ jobs:
             echo "staging" > .workspace
           fi
 
-      - name: Read TF workspace contents
+      - name: Read TF workspace value
         id: determine_workspace
         uses: guibranco/github-file-reader-action-v2@latest
         with:
