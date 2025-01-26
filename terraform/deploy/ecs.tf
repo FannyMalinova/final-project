@@ -48,8 +48,7 @@ resource "aws_ecs_task_definition" "ecs-budget-app" {
         },
         {
           name  = "ALLOWED_HOSTS"
-          #value = "*"
-          value = data.terraform_remote_state.outputs.budget-app-endpoint
+          value = data.terraform_remote_state.setup.outputs.budget-app-endpoint
         }
       ]
       mountPoints = [
