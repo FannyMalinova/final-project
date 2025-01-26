@@ -38,7 +38,7 @@ jobs:
           if [[ $GITHUB_REF == 'refs/head/release' ]]; then
             echo "release" > .workspace
           else
-            echo "config" > .workspace
+            echo "staging" > .workspace
           fi
 
       - name: Read TF workspace contents
