@@ -9,7 +9,7 @@ terraform {
 
   backend "s3" {
     bucket         = "final-project-s3"
-    key            = "env:/${terraform.workspace}/tf-state-config"
+    key            = "tf-state-config"
     region         = "eu-north-1"
     encrypt        = true
     dynamodb_table = "final-project-dynamo-table"
