@@ -38,7 +38,12 @@ variable "dns_zone_name" {
   default     = "fanislava.com"
 }
 
-variable "dns_env" {
-  description = "Prefix for the subdomains"
-  default = "config"
+variable "subdomain_map" {
+  description = "Subdomain for each environment"
+  type        = map(string)
+
+  default = {
+    release = "budget-app"
+    config  = "budget-app-staging"
+  }
 }
