@@ -101,6 +101,7 @@ jobs:
 
       - name: Set vars
         run: |
+          echo $GITHUB_REF
           if [[ $GITHUB_REF == 'refs/head/release' ]]; then
             echo "release" > .workspace
           else
