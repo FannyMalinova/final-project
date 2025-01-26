@@ -10,6 +10,25 @@ resource "aws_iam_access_key" "budget-user" {
   user = aws_iam_user.budget-user.name
 }
 
+#data "aws_iam_policy_document" "get-user-policy" {
+  #statement {
+    #effect = "Allow"
+    #actions = ["iam:GetUser"]
+    #resources = ["*"]
+  #}
+#}
+
+#resource "aws_iam_policy" "get-user-policy" {
+  #name = "${aws_iam_user.budget-user.name}-get-user"
+  #description = "Policy to get user info"
+  #policy = data.aws_iam_policy_document.get-user-policy.json
+#}
+
+#resource "aws_iam_user_policy_attachment" "get-user-policy" {
+  #user = aws_iam_user.budget-user.name
+  #policy_arn = aws_iam_policy.get-user-policy.arn
+#}
+
 ###
 # Add policy for terraform backend to S3 and Dynamo DB access #
 ###
@@ -306,7 +325,8 @@ data "aws_iam_policy_document" "logs" {
       "logs:DescribeLogGroups",
       "logs:CreateLogGroup",
       "logs:TagResource",
-      "logs:ListTagsLogGroup"
+      "logs:ListTagsLogGroup",
+      "logs:ListTagsForResource"
     ]
     resources = ["*"]
   }
@@ -336,7 +356,8 @@ data "aws_iam_policy_document" "task-execution-role-policy" {
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
       "logs:CreateLogStream",
-      "logs:PutLogEvents"
+      "logs:PutLogEvents",
+      "ecr:DescribeRepositories"
     ]
 
     resources = ["*"]
