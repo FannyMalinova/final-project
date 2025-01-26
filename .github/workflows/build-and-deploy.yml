@@ -65,7 +65,7 @@ jobs:
         run: |
           docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=setup/ init
           docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=setup/ workspace select -or-create $TF_WS
-          docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=setup/ apply
+          docker compose -f docker-compose-terraform-setup.yml run --rm terraform -chdir=setup/ apply -auto-approve
 
       - name: Log in to AWS
         id: login-ecr
