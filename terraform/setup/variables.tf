@@ -44,6 +44,6 @@ variable "subdomain_map" {
 
   default = {
     release = "budget-app"
-    config  = "budget-app-staging"
+    staging  = "budget-app-staging"
   }
 }
