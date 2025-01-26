@@ -445,3 +445,41 @@ resource "aws_iam_user_policy_attachment" "elb" {
   user       = aws_iam_user.budget-user.name
   policy_arn = aws_iam_policy.elb.arn
 }
+
+#############################
+# Policy for DNS
+#############################
+
+data "aws_iam_policy_document" "route53" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "route53:ListHostedZones",
+      "route53:ListHostedZones",
+      "route53:ChangeTagsForResource",
+      "route53:GetHostedZone",
+      "route53:ListTagsForResource",
+      "route53:ChangeResourceRecordSets",
+      "route53:GetChange",
+      "route53:ListResourceRecordSets",
+      "acm:RequestCertificate",
+      "acm:AddTagsToCertificate",
+      "acm:DescribeCertificate",
+      "acm:ListTagsForCertificate",
+      "acm:DeleteCertificate",
+      "acm:CreateCertificate"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "route53" {
+  name        = "${aws_iam_user.budget-user.name}-route53"
+  description = "Allow user to manage Route53 resources."
+  policy      = data.aws_iam_policy_document.route53.json
+}
+
+resource "aws_iam_user_policy_attachment" "route53" {
+  user       = aws_iam_user.budget-user.name
+  policy_arn = aws_iam_policy.route53.arn
+}
