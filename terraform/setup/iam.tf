@@ -28,7 +28,7 @@ data "aws_iam_policy_document" "tf-backend" {
       "arn:aws:s3:::${var.tf-state-bucket}/tf-state-release/*",
       "arn:aws:s3:::${var.tf-state-bucket}/tf-state-release-env/*",
       "arn:aws:s3:::${var.tf-state-bucket}/env:/*",
-      "arn:aws:s3:::${var.tf-state-bucket}final-project-s3/tf-state-config"
+      "arn:aws:s3:::${var.tf-state-bucket}/tf-state-config"
     ]
   }
 
