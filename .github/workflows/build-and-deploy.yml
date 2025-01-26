@@ -35,7 +35,7 @@ jobs:
 
       - name: Set vars
         run: |
-          if [[ $GITHUB_REF == 'refs/head/release' ]]; then
+          if [[ $GITHUB_REF == 'refs/heads/release' ]]; then
             echo "release" > .workspace
           else
             echo "staging" > .workspace
@@ -101,8 +101,7 @@ jobs:
 
       - name: Set vars
         run: |
-          echo $GITHUB_REF
-          if [[ $GITHUB_REF == 'refs/head/release' ]]; then
+          if [[ $GITHUB_REF == 'refs/heads/release' ]]; then
             echo "release" > .workspace
           else
             echo "staging" > .workspace
