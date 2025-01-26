@@ -6,20 +6,20 @@ on:
   workflow_call:
   
 jobs:
-  #tests-and-checks:
-#    name: Tests and Checks
-    #uses: ./.github/workflows/tests-and-checks.yml
+  tests-and-checks:
+    name: Tests and Checks
+    uses: ./.github/workflows/tests-and-checks.yml
 
-  #snyk:
-    #name: Run Snyk
-    #runs-on: ubuntu-latest
-    #steps:
-      #- name: Run Snyk
-        #uses: snyk/actions/python@master
-        #continue-on-error: true
-        #env:
-          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          #SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  snyk:
+    name: Run Snyk
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Snyk
+        uses: snyk/actions/python@master
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   sonar:
     name: Run SonarCloud
