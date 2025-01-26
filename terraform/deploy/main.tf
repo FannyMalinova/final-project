@@ -47,7 +47,7 @@ data "terraform_remote_state" "setup" {
   config = {
     bucket = "final-project-s3"
     # key    = "tf-state-config"
-    key    = "env:/config/tf-state-config"
+    key    = "env:/${terraform.workspace}/tf-state-config"
     region = "eu-north-1"
   }
 }
