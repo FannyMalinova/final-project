@@ -9,6 +9,7 @@ terraform {
 
   backend "s3" {
     bucket         = "final-project-s3"
+    workspace_key_prefix = "env:"
     key            = "tf-state-config"
     region         = "eu-north-1"
     encrypt        = true
