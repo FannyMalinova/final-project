@@ -23,7 +23,10 @@ resource "aws_security_group" "ecs-service" {
   name        = "${local.prefix}-ecs-service"
   vpc_id      = aws_vpc.vpc-main.id
 
-  # Outbound access to endpoints
+##############################
+# Outbound access to endpoints
+##############################
+
   egress {
     from_port   = 443
     to_port     = 443
@@ -31,7 +34,10 @@ resource "aws_security_group" "ecs-service" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # RDS connectivity
+##############################
+# RDS connectivity
+##############################
+
   egress {
     from_port = 5432
     to_port   = 5432
@@ -42,7 +48,10 @@ resource "aws_security_group" "ecs-service" {
     ]
   }
 
-  # HTTP inbound access
+##############################
+# HTTP inbound access
+##############################
+
   ingress {
     from_port   = 5000
     to_port     = 5000
