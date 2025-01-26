@@ -4,7 +4,7 @@ data "aws_route53_zone" "zone" {
 
 resource "aws_route53_record" "budget-app" {
   zone_id = data.aws_route53_zone.zone.zone_id
-  name    = "budget-app-${var.dns_env}.${data.aws_route53_zone.zone.name}"
+  name    = "${lookup(var.subdomain_map, terraform.workspace)}.${data.aws_route53_zone.zone.name}"
   type    = "CNAME"
   ttl     = "300"
 
